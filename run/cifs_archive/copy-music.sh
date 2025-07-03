@@ -3,6 +3,7 @@
 SRC="/mnt/musicarchive"
 DST="/mnt/music"
 LOG="/tmp/rsyncmusiclog.txt"
+MLOG="/mutable/rsyncmusic.log"
 
 # check that DST is the mounted disk image, not the mountpoint directory
 if ! findmnt --mountpoint $DST > /dev/null
@@ -54,7 +55,11 @@ function do_music_sync {
 
   connectionmonitor $$ &
 
-  if ! rsync -rum --no-human-readable --exclude=.fseventsd/*** --exclude=*.DS_Store --exclude=.metadata_never_index \
+  echo -e "============================\n" \
+  $(date) \
+  "\n============================" >> "$MLOG"
+  
+  if ! rsync -rumv --no-human-readable --exclude=.fseventsd/*** --exclude=*.DS_Store --exclude=.metadata_never_index \
                 --exclude="System Volume Information/***" \
                 --delete --modify-window=2 --info=stats2 "$SRC/" "$DST" &> "$LOG"
   then
@@ -88,6 +93,12 @@ function do_music_sync {
   else
     log "$message"
   fi
+
+  tail -n 50000 "$MLOG" > /tmp/rsyncmusic.tmp && mv /tmp/rsyncmusic.tmp "$MLOG" 
+  cat "$LOG" >> "$MLOG"
+  log "Archiving rsyncmusic.log to the server"
+  cp -f "$MLOG" "$ARCHIVE_MOUNT"
+  cp -f /mutable/archiveloop.log "$ARCHIVE_MOUNT"
 }
 
 if ! do_music_sync
