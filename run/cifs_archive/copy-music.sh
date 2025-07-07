@@ -96,7 +96,7 @@ function do_music_sync {
 
   tail -n 50000 "$MLOG" > /tmp/rsyncmusic.tmp && mv /tmp/rsyncmusic.tmp "$MLOG" 
   cat "$LOG" >> "$MLOG"
-  log "Archiving rsyncmusic.log to the server"
+  log "Archiving rsyncmusic.log & archiveloop.log to the server"
   cp -f "$MLOG" "$ARCHIVE_MOUNT"
   cp -f /mutable/archiveloop.log "$ARCHIVE_MOUNT"
 }
