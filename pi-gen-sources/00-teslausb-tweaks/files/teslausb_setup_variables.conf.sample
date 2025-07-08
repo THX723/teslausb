@@ -25,9 +25,12 @@ export SHARE_NAME='your_archive_share/optional_path_on_share'
 export SHARE_USER=username
 export SHARE_PASSWORD='password'
 # the cifs options below usually don't need to be specified
-# export SHARE_DOMAIN=domain
-# export CIFS_VERSION="3.0"
-# export CIFS_SEC="ntlm"
+#export SHARE_DOMAIN=domain
+#export CIFS_VERSION="3.0"
+#export CIFS_SEC="ntlm"
+# Options to include archiveloop.log and rsync-music.log during archiving
+#export CIFS_ARCHIVE_LOG=true
+#export CIFS_MUSIC_LOG=true
 
 # Variables for rsync archiving
 # For instructions setting up SSH Public Key authentication, view:
