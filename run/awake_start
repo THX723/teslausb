@@ -25,9 +25,9 @@ else
         # Check if HTTP status code is not 200 (OK)
         if [ "$http_status" != "200" ]
         then
-          # Log an errormar
+          # Log an error
           log "Tessie: Failed to send command. Check your TESSIE_API_TOKEN and TESSIE_VIN are set correctly. If they are, your car may be offline or asleep."
-          if [ $retry -eq 0 ]
+          if [ "$retry" -eq "0" ]
             log "Tessie: Retrying again in 60s in case the connection was bad."
             retry=$((retry+1))
             sleep 60
