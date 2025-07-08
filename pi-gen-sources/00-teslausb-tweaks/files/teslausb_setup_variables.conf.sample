@@ -278,6 +278,8 @@ export CAM_SIZE=40G
 # TeslaFi/Tessie Pros/Cons:
 #   + Straightforward to configure initially
 #   + Remote monitoring and management
+#   - Tessie: If not using Sentry Mode, need to maintain a consistent
+#     wifi/interenet connection to keep car alive.
 #   - Some security vulnerability
 #   - Requires paid 3rd-party service from TeslaFi or Tessie
 #
