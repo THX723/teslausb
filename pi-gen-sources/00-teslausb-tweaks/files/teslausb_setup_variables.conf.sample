@@ -387,9 +387,9 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #    2b. Alternatively, if Web UI was not enabled, from the SSH command line:
 #        sudo /root/bin/tesla-control -ble -vin <your VIN> add-key-request /root/.ble/key_public.pem owner cloud_key
 #
-#    3.  Shortly after initiating pairing, a prompt is shown on the in-car
-#        screen requesting for an authorized key card. Please tap key card on
-#        the center console promptly and confirm.
+#    3.  Shortly after initiating pairing, a request is shown for an authorized
+#        key card. Please tap a key card on the center console promptly and
+#        confirm on the in-car screen.
 #
 #    4.  If done successfully, you'll see an "Unknown Key" (can be renamed)
 #        entry under the in-car Locks screen.
