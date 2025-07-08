@@ -251,7 +251,7 @@ export CAM_SIZE=40G
 #
 # In order to keep the car awake, several methods have been implemented:
 # TeslaFi, Tessie, and Bluetooth Low Energy (BLE). Please note that the previous
-# implementation using the (unofficial) Tesla API was deprecated. Tesla had
+# implementation using the (unofficial) Tesla API was removed. Tesla had
 # superseded it with their official Fleet API (a paid service for developers).
 # Consequently, TeslaFi and Tessie now enforce request rate limits. As a result,
 # the entire Keep Car Awake framework has been refactored to use considerably
@@ -266,8 +266,9 @@ export CAM_SIZE=40G
 #   ++ Direct connection to the car; unlimited.
 #   - Added complexity to configure initially
 #   - Some security vulnerability
-#   - Only supports Pi 4 and Pi Zero 2 W. (Pi Zero W is not supported at this
-#     time. For other platforms, please test and let us know.)
+#   - BLE hardware compatibility: Does not currently support Raspberry Pi 0W.
+#               Verified support: Raspberry Pi 4, 5, 0W2, Rock Pi 4C+.
+#                                 (please test and let us know if others work)
 #   * Note: Tesla is limited to 3 simultaneous BLE connections for passive
 #           functions. So manage your BLE devices (phone key, wearable key, key
 #           fob, etc.) accordingly. This is independent of how many key pairs
@@ -291,8 +292,8 @@ export CAM_SIZE=40G
 #     * Change your TeslaUSB user passwords (pi and root)
 #     * Set user/password for the TeslaUSB AP (if enabled)
 #     * Enable Tesla's pin-to-drive
-#     * If your TeslaUSB has been compromise, immediately change your Tesla.com
-#       password, which will invalidate all 3rd-party app access.
+#     * If your TeslaUSB has been compromised, immediately change your
+#       Tesla.com password, which will invalidate all 3rd-party app access.
 #       Followed by ...
 #         Tesla BLE: Login to your Tesla account and remove the BLE key pair.
 #         TeslaFi: Login to your TeslaFi account and revoke API token.
@@ -362,8 +363,8 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #
 #   Enable TeslaFi API Command:
 #     Navigate to Settings -> Tesla API -> Commands (tab).
-#     Verify 'Sentry Mode' command is checked (enabled). You may also disable
-#     any command(s) you don't want (e.g. 'Unlock' for added security.)
+#     Verify 'Sentry Mode' command is checked (enabled).
+#     For added security, recommend disabling 'Unlock' command.
 # .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
 #
 # For Tessie, provide your API token and vehicle VIN here:
