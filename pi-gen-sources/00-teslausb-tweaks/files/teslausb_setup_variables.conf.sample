@@ -321,20 +321,20 @@ export CAM_SIZE=40G
 $ forget) to your in-car menu: Safety -> Sentry Mode.
 #
 #  Case 1: [Compatible with TeslaFi, Tessie, or BLE]
-#		      
-# 		     You want Sentry Mode turned On everywhere, except when parked safely
-#		       at home. Upon arriving home, Sentry Mode will already be ON
-#		       to power TeslaUSB through archiving. Once archiving completes, a
-#		       command will be sent to turn OFF Sentry Mode, thus allowing the car
-#		       to go back to sleep. Whenever you start a new drive, car will default
+#
+#          You want Sentry Mode turned On everywhere, except when parked safely
+#          at home. Upon arriving home, Sentry Mode will already be ON
+#          to power TeslaUSB through archiving. Once archiving completes, a
+#          command will be sent to turn OFF Sentry Mode, thus allowing the car
+#          to go back to sleep. Whenever you start a new drive, car will default
 #          Sentry Mode to ON by default, per your in-car setting.
 #
 #     >>>> IMPORTANT: Verify your in-car Sentry Mode is set to ON, and
 #                     'Exclude Home' is UNCHECKED.
 #
 #  Case 2: [Compatible with TeslaFi, Tessie, or BLE]
-#		   	
-#		       You DON'T want Sentry Mode turned on anywhere, unless archiving.
+#
+#          You DON'T want Sentry Mode turned on anywhere, unless archiving.
 #          Mode of operation: Upon arriving home, TeslaUSB will send a command
 #          to turn ON Sentry Mode. Once archiving completes, a command will be
 #          sent to turn OFF Sentry Mode, thus allow the car to go back to sleep.
@@ -343,10 +343,10 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #
 #     >>>> IMPORTANT: Verify your in-car Sentry Mode is set to OFF.
 #
-# Case 3: [Compatible with Tessie or BLE]
+#  Case 3: [Compatible with Tessie or BLE]
 #
-#		      Sentry Mode is not used by TeslaUSB. Instead a periodic command is
-#		      sent to the car to keep it awake.
+#          Sentry Mode is not used by TeslaUSB. Instead a periodic command is
+#          sent to the car to keep it awake.
 #
 # Provide your use case here:
 #export SENTRY_CASE=1
