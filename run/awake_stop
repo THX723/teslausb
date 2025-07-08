@@ -87,20 +87,12 @@ case "${SENTRY_CASE}" in
 
     elif [[ -n "${TESLA_BLE_VIN:+x}" ]]
     then
-      if [ -e /tmp/keep_awake_task_pid ]
-      # Kill Tesla BLE knudging task
+      # Use Tesla BLE API to disable Sentry Mode
+      if /root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" sentry-mode off
       then
-        log "Tesla BLE: Stopping wake car background task."
-        kill "$(cat /tmp/keep_awake_task_pid)"
-        rm -f /tmp/keep_awake_task_pid
+        log "Tesla BLE: Command sent to disable Sentry Mode."
       else
-        # Use Tesla BLE API to disable Sentry Mode
-        if /root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" sentry-mode off
-        then
-          log "Tesla BLE: Command sent to disable Sentry Mode."
-        else
-          log "Tesla BLE: Failed to set Sentry Mode."
-        fi
+        log "Tesla BLE: Failed to set Sentry Mode."
       fi
     fi
   ;;
