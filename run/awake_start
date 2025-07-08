@@ -28,6 +28,7 @@ else
           # Log an error
           log "Tessie: Failed to send command. Check your TESSIE_API_TOKEN and TESSIE_VIN are set correctly. If they are, your car may be offline or asleep."
           if [ "$retry" -eq "0" ]
+          then
             log "Tessie: Retrying again in 60s in case the connection was bad."
             retry=$((retry+1))
             sleep 60
