@@ -358,13 +358,13 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #export TESLAFI_API_TOKEN='YOUR_TESLAFI_API_TOKEN_GOES_HERE'
 #
 #   How to generate TeslaFi API Tokens:
-#     Log into your TeslaFi account.
-#     Navigate to Settings -> Tesla API -> API Token (tab).
+#     1. Log into your TeslaFi account.
+#     2. Navigate to Settings -> Tesla API -> API Token (tab).
 #
 #   Enable TeslaFi API Command:
-#     Navigate to Settings -> Tesla API -> Commands (tab).
-#     Verify 'Sentry Mode' command is checked (enabled).
-#     For added security, recommend disabling 'Unlock' command.
+#     1. Navigate to Settings -> Tesla API -> Commands (tab).
+#     2. Verify 'Sentry Mode' command is checked (enabled).
+#     3. For added security, recommend disabling 'Unlock' command.
 # .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
 #
 # For Tessie, provide your API token and vehicle VIN here:
@@ -372,8 +372,8 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #export TESSIE_VIN=5YJ3E1EA4JF000001
 #
 #   How to generate Tessie API Tokens
-#     Log into your Tessie account.
-#     Navigate to Settings -> Developer API -> Generate access token.
+#     1. Log into your Tessie account.
+#     2. Navigate to Settings -> Developer API -> Generate access token.
 # .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
 #
 # For BLE, provide your vehicle VIN here:
