@@ -267,7 +267,7 @@ export CAM_SIZE=40G
 #   - Added complexity to configure initially
 #   - Some security vulnerability
 #   - BLE hardware compatibility: Does not currently support Raspberry Pi 0W.
-#               Verified support: Raspberry Pi 4, 5, 0W2, Rock Pi 4C+.
+#              Verified (so far): Raspberry Pi 4, 5, 0W2. Rock Pi 4C+.
 #                                 (please test and let us know if others work)
 #   * Note: Tesla is limited to 3 simultaneous BLE connections for passive
 #           functions. So manage your BLE devices (phone key, wearable key, key
@@ -389,7 +389,7 @@ $ forget) to your in-car menu: Safety -> Sentry Mode.
 #
 #    3.  Shortly after initiating pairing, a prompt is shown on the in-car
 #        screen requesting for an authorized key card. Please tap key card on
-#        the center console promptly.
+#        the center console promptly and confirm.
 #
 #    4.  If done successfully, you'll see an "Unknown Key" (can be renamed)
 #        entry under the in-car Locks screen.
