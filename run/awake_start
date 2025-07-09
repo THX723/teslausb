@@ -33,6 +33,8 @@ else
             retry=$((retry+1))
             sleep 60
             continue
+          else
+            log "Tessie: Connection to the internet likely broken."
           fi
         fi
 
