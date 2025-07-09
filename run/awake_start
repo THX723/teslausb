@@ -46,6 +46,7 @@ else
       fi
 
       sleep 300
+      retry=0
     done
   }
 
