@@ -321,7 +321,7 @@ export CAM_SIZE=40G
 #
 # Determine your Keep Car Awake preference (choose 1 case). Please consider the
 # compatibility notes. If applicable, also make a 1-time change (set and
-$ forget) to your in-car menu: Safety -> Sentry Mode.
+# forget) to your in-car menu: Safety -> Sentry Mode.
 #
 #  Case 1: [Compatible with TeslaFi, Tessie, or BLE]
 #
