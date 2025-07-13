@@ -42,7 +42,7 @@ else
       # Use Tesla BLE API to nudge the car
       then
         log "Telsa BLE: Nudging the car."
-        /root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" charge-port-close
+        /root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" charge-port-close || true
       fi
 
       sleep 300
