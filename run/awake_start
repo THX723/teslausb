@@ -57,7 +57,7 @@ else
             sleep 60
             continue
           else
-            log "Tesla BLE: $BLE_repsponse"
+            log "Tesla BLE: $BLE_response"
           fi
         fi
       fi
