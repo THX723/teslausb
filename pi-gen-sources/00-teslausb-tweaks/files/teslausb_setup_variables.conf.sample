@@ -347,16 +347,17 @@ export CAM_SIZE=40G
 #   performance and reliability. As a point of reference, Raspberry Pi
 #   Foundation states their operating temperature range is 0°C to 85°C, and the
 #   system will begin to throttle the processor when it reaches 80°C to prevent
-#   damage. However, other sub-components (e.g. WiFi) may become unstable at much
-#   lower thresholds. The general safe practice is to keep it well below 70°C,
-#   and start to pay attention when reaching 50-60°C regularly. Different makes and
-#   models of devices should also be taken into consideration.
+#   damage. However, other sub-components (e.g. WiFi) may become unstable at
+#   much lower thresholds. The general safe practice is to keep it well below
+#   70°C, and start to pay attention when reaching 50-60°C regularly. Having
+#   said that, different makes and models of devices should be taken into
+#   consideration.
 #
 #   Uncommenting any of the following parameters will activated TeslaUSB's
 #   temperature monitoring, which checks temperature once a minute and holds
-#   the maximum value. Logs entries are made accordingly to:
+#   the maximum value. Logs entries are made accordingly for:
 #   
-#   Two (2) temperature threshold points for: Warning, and Caution.
+#   Two (2) temperature threshold points: Warning, and Caution.
 #   Set values must be integers and expressed in milli-°C (ex. 68.0°C = 68000)
 #export TEMPERATURE_CAUTION=50000
 #export TEMPERATURE_WARNING=68000
