@@ -356,12 +356,12 @@ export CAM_SIZE=40G
 #   temperature monitoring, which checks temperature once a minute and holds
 #   the maximum value. Logs entries are made accordingly to:
 #   
-#   Two (2) temperature threshoold points for: Warning, and Caution.
+#   Two (2) temperature threshold points for: Warning, and Caution.
 #   Set values must be integers and expressed in milli-°C (ex. 68.0°C = 68000)
 #export TEMPERATURE_CAUTION=50000
 #export TEMPERATURE_WARNING=68000
 #
-#   Fixed interval temperature logging (instaneous and max). Set value must
+#   Fixed-interval temperature logging (instantaneous and max). Set value must
 #   be an integer and expressed in minutes (minimum = 1). This is useful for
 #   getting a better sense of the thermo activity throughout the day. 
 #export TEMPERATURE_INTERVAL=60
