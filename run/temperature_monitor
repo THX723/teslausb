@@ -18,15 +18,15 @@ function readable() {
 
 if [[ ! ( -z "${TEMPERATURE_CAUTION:+x}" ) ]]
 then
-	log "Temperature Monitor: Warning threshold logging set [$(readable "$TEMPERATURE_CAUTION")]"
+	log "Temperature Monitor: Caution threshold logging is set [$(readable "$TEMPERATURE_CAUTION")]"
 fi
 if [[ ! ( -z "${TEMPERATURE_WARNING:+x}"  ) ]]
 then
-	log "Temperature Monitor: Caution threshold logging set [$(readable "$TEMPERATURE_WARNING")]"
+	log "Temperature Monitor: Warning threshold logging is set [$(readable "$TEMPERATURE_WARNING")]"
 fi
 if [[ ! ( -z "${TEMPERATURE_INTERVAL:+x}"  ) ]]
 then
-	log "Temperature Monitor: Fixed interval logging set [$TEMPERATURE_INTERVAL min.]"
+	log "Temperature Monitor: Fixed-interval logging is set [$TEMPERATURE_INTERVAL min.]"
 fi
 if [ "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ]
 then
@@ -110,5 +110,5 @@ do
 	sleep 60
 	((counter+=60))
 	timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-  	raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+  raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
 done
