@@ -355,8 +355,9 @@ export CAM_SIZE=40G
 #
 #   Uncommenting any of the following parameters will activate TeslaUSB's
 #   temperature monitoring, which checks temperature once a minute and retains
-#   the maximum value. Entries are logged, and and sent via push notifications
-#   (except in the fixed-interval case) according to the following:
+#   the maximum value. Entries are logged and, if possible, sent via push
+#   notifications (except in the fixed-interval case) according to the
+#   following:
 #   
 #   Two (2) temperature threshold points for: WARNING and CAUTION. Set values
 #   must be integers and expressed in milli-°C (e.g., 68.0°C = 68000)
