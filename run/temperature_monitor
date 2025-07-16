@@ -18,15 +18,15 @@ function readable() {
 
 if [[ ! ( -z "${TEMPERATURE_CAUTION:+x}" ) ]]
 then
-	log "Temperature Monitor: Caution threshold logging is set [$(readable "$TEMPERATURE_CAUTION")]"
+	log "Temperature Monitor: Warning threshold logging set [$(readable "$TEMPERATURE_CAUTION")]"
 fi
 if [[ ! ( -z "${TEMPERATURE_WARNING:+x}"  ) ]]
 then
-	log "Temperature Monitor: Warning threshold logging is set [$(readable "$TEMPERATURE_WARNING")]"
+	log "Temperature Monitor: Caution threshold logging set [$(readable "$TEMPERATURE_WARNING")]"
 fi
 if [[ ! ( -z "${TEMPERATURE_INTERVAL:+x}"  ) ]]
 then
-	log "Temperature Monitor: Fixed-interval logging is set [$TEMPERATURE_INTERVAL min.]"
+	log "Temperature Monitor: Fixed interval logging set [$TEMPERATURE_INTERVAL min.]"
 fi
 if [ "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ]
 then
@@ -36,9 +36,11 @@ fi
 counter=0
 flag_warning=0
 flag_caution=0
+timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
-peak_time=$(date +"%Y-%m-%d %H:%M:%S")
+peak_time=$timestamp
 peak_temp=$raw_temp
+message=""
 
 while true
 do
@@ -59,8 +61,10 @@ do
 		then
 			if [[ "$flag_warning" -eq 0 ]]
 			then
-				log "Temperature Monitor: Exceeded WARNING threshold ($(readable "$TEMPERATURE_WARNING"))!!!"
 				flag_warning=1
+				message="Temperature Monitor: Exceeded WARNING threshold ($(readable "$TEMPERATURE_WARNING"))!!!"
+				log "$message"
+				/root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "failed to send push message; likely no internet connection."
 			fi
 	  fi
   fi
@@ -76,8 +80,10 @@ do
 		then
 			if [[ "$flag_caution" -eq 0 ]]
 	      then
-	      	log "Temperature Monitor: Exceeded CAUTION threshold ($(readable "$TEMPERATURE_CAUTION"))!"
 	      	flag_caution=1
+	      	message="Temperature Monitor: Exceeded CAUTION threshold ($(readable "$TEMPERATURE_CAUTION"))!!!"
+	      	log "$message"
+					/root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "failed to send push message; likely no internet connection."
 			fi
 		fi
 	fi
@@ -95,13 +101,14 @@ do
 	# Log right after Archive_Clips
 	if [[ ( "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ) && ( -e /tmp/flag_post_archive ) ]]
 	then
-		log "Temperature Monitor: Current=$(readable "$raw_temp"), Max=$(readable "$peak_temp") @$peak_time"
 		rm /tmp/flag_post_archive # Clear flag
+		message="Temperature Monitor: Current=$(readable "$raw_temp"), Max=$(readable "$peak_temp") @$peak_time"
+		log "$message"
+		/root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "failed to send push message."
 	fi
 
 	sleep 60
 	((counter+=60))
-
 	timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-  raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+  	raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
 done
