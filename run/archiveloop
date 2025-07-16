@@ -240,7 +240,7 @@ function unmount_music_file () {
 
 function wait_for_archive_to_be_unreachable () {
   log "Waiting for archive to be unreachable..."
-  while WARNING
+  while true
     do
       if ! retry archive_is_reachable
       then
