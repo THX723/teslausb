@@ -364,9 +364,9 @@ export CAM_SIZE=40G
 #export TEMPERATURE_WARNING=50000
 #export TEMPERATURE_CAUTION=68000
 #
-#   Fixed-interval temperature logging (instantaneous and maximum). The set
-#   value must be an integer and expressed in minutes (minimum = 1). This is
-#   useful understanding thermal activity throughout the day. 
+#   Fixed-interval temperature logging (instantaneous and maximum). This is
+#   useful for understanding the thermal activity throughout the day.
+#   The set value must be an integer and expressed in minutes (minimum = 1).  
 #export TEMPERATURE_INTERVAL=60
 #
 #   At the end of each archiving/music sync process, the device typically runs
