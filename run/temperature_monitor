@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-if [[ ( -z "${TEMPERATURE_CAUTION:+x}" ) && ( -z "${TEMPERATURE_WARNING:+x}" ) && ( -z "${TEMPERATURE_INTERVAL:+x}" ) && ( -z "${TEMPERATURE_POSTARCHIVE:+x}" ) ]]
+if [[ ( -z "${TEMPERATURE_WARNING:+x}" ) && ( -z "${TEMPERATURE_CAUTION:+x}" ) && ( -z "${TEMPERATURE_INTERVAL:+x}" ) && ( -z "${TEMPERATURE_POSTARCHIVE:+x}" ) ]]
 then
 	log "Temperature Monitor: Not enabled."
 	exit 0
@@ -16,13 +16,13 @@ function readable() {
   echo "${temp1}.${temp2}°C"
 }
 
-if [[ ! ( -z "${TEMPERATURE_CAUTION:+x}" ) ]]
-then
-	log "Temperature Monitor: Caution threshold logging is set [$(readable "$TEMPERATURE_CAUTION")]"
-fi
 if [[ ! ( -z "${TEMPERATURE_WARNING:+x}"  ) ]]
 then
 	log "Temperature Monitor: Warning threshold logging is set [$(readable "$TEMPERATURE_WARNING")]"
+fi
+if [[ ! ( -z "${TEMPERATURE_CAUTION:+x}" ) ]]
+then
+	log "Temperature Monitor: Caution threshold logging is set [$(readable "$TEMPERATURE_CAUTION")]"
 fi
 if [[ ! ( -z "${TEMPERATURE_INTERVAL:+x}"  ) ]]
 then
@@ -50,10 +50,10 @@ do
   	peak_time=$timestamp
   fi
 
-	# Log warning threshold exceeded
+	#Log Warning threshold exceeded
   if [[ ! ( -z "${TEMPERATURE_WARNING:+x}" ) ]]
   then
-	  if [[ "$raw_temp" -lt "$TEMPERATURE_WARNING" ]] # Clear Warning flag if below threshold
+	  if [[ "$raw_temp" -lt ("$TEMPERATURE_WARNING" - 3) ]] #Clear Warning flag if below threshold - 3 (hysteresis)
 	  then
 	  	flag_warning=0
 
@@ -69,10 +69,10 @@ do
 	  fi
   fi
 
-  # Log caution threshold exceeded
+  #Log Caution threshold exceeded
   if [[ ! ( -z "${TEMPERATURE_CAUTION:+x}" ) ]]
   then
-	  if [[ "$raw_temp" -lt "$TEMPERATURE_CAUTION" ]] # Clear Caution flag if below threshold
+	  if [[ "$raw_temp" -lt ("$TEMPERATURE_CAUTION" - 3) ]] #Clear Caution flag if below threshold - 3 (hysteresis)
 	  then
 	  	flag_caution=0
 	  
@@ -88,7 +88,7 @@ do
 		fi
 	fi
 
-  # Log temperature at fixed interval
+  #Log temperature at fixed interval
   if [[ ! ( -z "${TEMPERATURE_INTERVAL:+x}" ) ]]
   then
     counter_mod=$((counter % (TEMPERATURE_INTERVAL * 60)))
@@ -98,10 +98,10 @@ do
     fi
   fi
 
-	# Log right after Archive_Clips
+	#Log right after Archive_Clips
 	if [[ ( "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ) && ( -e /tmp/flag_post_archive ) ]]
 	then
-		rm /tmp/flag_post_archive # Clear flag
+		rm /tmp/flag_post_archive #Clear flag
 		message="Temperature Monitor: Current=$(readable "$raw_temp"), Max=$(readable "$peak_temp") @$peak_time"
 		log "$message"
 		/root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "failed to send push message."
