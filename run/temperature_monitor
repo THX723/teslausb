@@ -92,7 +92,7 @@ do
     counter_mod=$((counter % (TEMPERATURE_INTERVAL * 60)))
     if [ "$counter_mod" -eq 0 ]
     then
-      log "Temperature Monitor: [$(readable "$raw_temp")] (max=$(readable "$peak_temp") $peak_time"
+      log "Temperature Monitor: $(readable "$raw_temp") (max=$(readable "$peak_temp") $peak_time)"
     fi
   fi
 
@@ -100,7 +100,7 @@ do
   if [[ ( "${TEMPERATURE_POSTARCHIVE:-false}" = "true" ) && ( -e /tmp/flag_post_archive ) ]]
   then
     rm /tmp/flag_post_archive #Clear flag
-    message="Temperature Monitor: [$(readable "$raw_temp")] (max=$(readable "$peak_temp") $peak_time"
+    message="Temperature Monitor: $(readable "$raw_temp") (max=$(readable "$peak_temp") $peak_time)"
     /root/bin/send-push-message "$NOTIFICATION_TITLE:" "$message" || log "failed to send push message."
   fi
 
