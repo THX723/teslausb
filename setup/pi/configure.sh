@@ -198,12 +198,6 @@ function check_teslafi_api () {
       return 1
     fi
 
-    if [ "$number" -eq 1 ] || [ "$number" -eq 2 ]; then
-        echo "The variable is $number"
-    else
-        echo "The variable is neither 1 nor 2"
-    fi
-
     if ! command -v jq &>/dev/null
       then
         log_progress "Installing required package for TeslaFi API: jq"
