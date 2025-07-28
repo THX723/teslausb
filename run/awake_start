@@ -10,7 +10,7 @@ else
     while true
     do
       if [[ -n "${TESSIE_API_TOKEN:+x}" ]]
-      #Use Tessie API to nudge the car
+      # Use Tessie API to nudge the car
       then
         http_response=$(curl -s -w "%{http_code}" \
           -H "Authorization: Bearer $TESSIE_API_TOKEN" \
@@ -18,13 +18,13 @@ else
           -H "User-Agent: github.com/marcone/teslausb" \
           "https://api.tessie.com/$TESSIE_VIN/command/close_charge_port")
 
-        #Extract HTTP status code
+        # Extract HTTP status code
         http_status="${http_response: -3}"
         
-        #Check if HTTP status code is not 200 (OK)
+        # Check if HTTP status code is not 200 (OK)
         if [ "$http_status" != "200" ]
         then
-          #Log an error
+          # Log an error
           log "Tessie: Failed to send command. Check your TESSIE_API_TOKEN and TESSIE_VIN are set correctly. If they are, your car may be offline or asleep."
           if [ "$retry" -lt "3" ]
           then
@@ -40,14 +40,14 @@ else
       fi
 
       if [[ -n "${TESLA_BLE_VIN:+x}" ]]
-      #use Tesla BLE API to nudge the car
+      # use Tesla BLE API to nudge the car
       then
         if ! BLE_response=$(/root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" charge-port-close 2>&1)
         then
-          #check false-negative BLE responses
+          # check false-negative BLE responses
           if [[ ( "$BLE_response" != *"already closed"* ) && ( "$BLE_response" != *"cable connected"* ) ]]
           then
-            #log error and retry
+            # log error and retry
             log "Tesla BLE: Failed to nudge the car. There may be an issue with the BLE communication."
             if [ "$retry" -lt "3" ]
             then
@@ -70,12 +70,12 @@ else
 
   case "${SENTRY_CASE}" in
     1)
-      #Sentry Mode should already be enabled
+      # Sentry Mode should already be enabled
       log "Skip sending command to enable Sentry Mode."
       ;;
     2)
       if [[ ( -n "${TESLAFI_API_TOKEN:+x}" ) ]]
-      #Use TeslaFi API to enable Sentry Mode
+      # Use TeslaFi API to enable Sentry Mode
       then
         http_response=$(curl -s -w "%{http_code}" \
           -H "Authorization: Bearer $TESLAFI_API_TOKEN" \
@@ -85,24 +85,24 @@ else
 
         log "TeslaFi: Command sent to enable Sentry Mode."
 
-        #Extract HTTP status code
+        # Extract HTTP status code
         http_status="${http_response: -3}"
                 
-        #Extract response body (excluding status code)
+        # Extract response body (excluding status code)
         response_body="${http_response:0:${#http_response}-3}"
 
-        #Check if HTTP status code is not 200 (OK)
+        # Check if HTTP status code is not 200 (OK)
         if [ "$http_status" != "200" ]
         then
-          #Log an error
+          # Log an error
           log "TeslaFi: Failed to set Sentry Mode. Check your TESLAFI_API_TOKEN is set correctly. If it is, your car may be offline or asleep."
         else
-          #Check if the response is in JSON format
+          # Check if the response is in JSON format
           if ! jq -e . >/dev/null 2>&1 <<<"$response_body"
           then
             log "TeslaFi: Failed to set Sentry Mode."
           else
-            #Parse JSON and check if "result" is true
+            # Parse JSON and check if "result" is true
             result1=$(jq -r '.response' <<<"$response_body")
             result2=$(jq -r '.result' <<<"$result1")
             request_counter=$(jq -r '.tesla_request_counter' <<<"$response_body")
@@ -117,7 +117,7 @@ else
           fi
         fi
       elif [[ -n "${TESSIE_API_TOKEN:+x}" ]]
-      #Use Tessie API to enable Sentry Mode
+      # Use Tessie API to enable Sentry Mode
       then
         http_response=$(curl -s -w "%{http_code}" \
           -H "Authorization: Bearer $TESSIE_API_TOKEN" \
@@ -126,24 +126,24 @@ else
           "https://api.tessie.com/$TESSIE_VIN/command/enable_sentry")
 
         log "Tessie: Command sent to enable Sentry Mode."
-        #Extract HTTP status code
+        # Extract HTTP status code
         http_status="${http_response: -3}"
         
-        #Extract response body (excluding status code)
+        # Extract response body (excluding status code)
         response_body="${http_response:0:${#http_response}-3}"
         
-        #Check if HTTP status code is not 200 (OK)
+        # Check if HTTP status code is not 200 (OK)
         if [ "$http_status" != "200" ]
         then
-          #Log an error
+          # Log an error
           log "Tessie: Failed to set Sentry Mode. Check your TESSIE_API_TOKEN and TESSIE_VIN are set correctly. If they are, your car may not have a good connection."
         else
-          #Check if the response is in JSON format
+          # Check if the response is in JSON format
           if ! jq -e . >/dev/null 2>&1 <<<"$response_body"
           then
             log "Tessie: Failed to set Sentry Mode. Response data: $response_body"
           else
-            #Parse JSON and check if "result" is true
+            # Parse JSON and check if "result" is true
             result=$(jq -r '.result' <<<"$response_body")
             if [[ "$result" != "true" ]]
             then
@@ -152,7 +152,7 @@ else
           fi
         fi
       elif [[ -n "${TESLA_BLE_VIN:+x}" ]]
-      #Use Tesla BLE API to enable Sentry Mode
+      # Use Tesla BLE API to enable Sentry Mode
       then
         if /root/bin/tesla-control -ble -key-file /root/.ble/key_private.pem -vin "${TESLA_BLE_VIN^^}" sentry-mode on
         then
@@ -163,7 +163,7 @@ else
       fi
       ;;
     3)
-      #Nudge car periodically without using Sentry Mode
+      # Nudge car periodically without using Sentry Mode
       log "Starting background task to keep car awake."
       nudge &
       echo $! > /tmp/keep_awake_task_pid
