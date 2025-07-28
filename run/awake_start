@@ -74,12 +74,6 @@ else
     done
   }
 
-  if [[ -z "${SENTRY_CASE:+x}" && -n "${TESLA_BLE_VIN:+x}" ]]
-  then
-    # If BLE Sentry unset, can assume mode 3 
-    SENTRY_CASE=3
-  fi
-
   case "${SENTRY_CASE}" in
     1)
       # Sentry Mode should already be enabled
