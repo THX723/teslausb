@@ -502,6 +502,55 @@ function archive_teslacam_clips () {
   # apply custom removals/additions
   filterfile "${sentrylist}"
 
+  # Filter out files in SentryClips or RecentClips from previous during-archive
+  local -r ignore_during_archive=/tmp/ignore_during_archive
+  true > "${ignore_during_archive}"
+
+  if [ -s "/mutable/ignore_start" ] && [ -s "/mutable/ignore_stop" ]
+  then
+    local -r start_ts=$(cat /mutable/ignore_start)
+    local -r stop_ts=$(cat /mutable/ignore_stop)
+
+    # Validate that timestamps are numeric and start_ts <= stop_ts
+    if [[ "$start_ts" =~ ^[0-9]+$ ]] && [[ "$stop_ts" =~ ^[0-9]+$ ]] && [ "$start_ts" -le "$stop_ts" ]
+    then
+
+      # Iterate through sentrylist and filter files in SentryClips or RecentClips within the timestamp range
+      while read -r line
+      do
+        if [[ "$line" =~ ^(SentryClips|RecentClips)/([0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2})/ ]]
+        then
+          local dir_datetime=${BASH_REMATCH[2]}
+          local dir_ts
+          dir_ts=$(date --utc --date "${dir_datetime//_/ }" +%s 2>/dev/null || echo 0)
+          if [ "$dir_ts" -gt 0 ] && [ "$dir_ts" -ge "$start_ts" ] && [ "$dir_ts" -le "$stop_ts" ]
+          then
+            echo "$line" >> "${ignore_during_archive}"
+          fi
+        fi
+      done < "${sentrylist}"
+
+      # Count the number of files ignored due to timestamp range
+      local -i ignore_ts_count=0
+      if [ -s "${ignore_during_archive}" ]
+      then
+        ignore_ts_count=$(wc -l < "${ignore_during_archive}")
+      fi
+
+      # Log the number of ignored files with human-readable timestamps
+      if [ "$ignore_ts_count" -ge 0 ]
+      then
+        log "Ignoring $ignore_ts_count file(s) in SentryClips or RecentClips during the previous archiving session."
+      fi
+    else
+      log "Invalid or out-of-order timestamps in ignore_start or ignore_stop; skipping during-archive filter."
+    fi
+  else
+    log "ignore_start or ignore_stop missing or empty, skipping during-archive filter."
+  fi
+
+  prunefile "${sentrylist}" "${ignore_during_archive}"
+
   local -r sentry_count=$(grep -c -v TeslaTrackMode "$sentrylist")
   local -r trackmode_count=$(grep -c TeslaTrackMode "$sentrylist")
   local -r ignore_count=$(wc -l < "$ignorelist")
@@ -659,6 +708,10 @@ function has_cam_disk () {
 function archive_clips () {
   log "Archiving..."
 
+  # Timestamp start for during-archive filter
+  [ -f /mutable/ignore_start_new ] && mv -f /mutable/ignore_start_new /mutable/ignore_start
+  date +%s > /mutable/ignore_start_new
+
   if ! /root/bin/connect-archive.sh
   then
     log "Couldn't connect archive, skipping archive step."
@@ -689,6 +742,7 @@ function archive_clips () {
   fi
 
   touch /tmp/flag_post_archive  #Set post-archive flag for optional temperature logging
+  date +%s > /mutable/ignore_stop   #Timestamp stop for during-archive filter
   /root/bin/disconnect-archive.sh
 }
 
